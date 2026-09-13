@@ -16,6 +16,7 @@
 
 class Solution {
     Map<Integer, Integer> inorderIndexMap = new HashMap<>();
+    int preorderIndex = 0;
     public TreeNode buildTree(int[] preorder, int[] inorder) {
 
         for (int i = 0; i < inorder.length; i++){
@@ -23,32 +24,32 @@ class Solution {
         }
 
         return build(
-            preorder, 0, preorder.length-1,
+            preorder,
             0, inorder.length-1
         );
 
     }
 
     private TreeNode build(
-        int[] preorder, int preorderStart, int preorderEnd, 
+        int[] preorder,
         int inorderStart, int inorderEnd
     ){
 
-        if (preorderStart > preorderEnd || inorderStart > inorderEnd){
+        if (inorderStart > inorderEnd){
             return null;
         }
 
-        int num = preorder[preorderStart];
+        int num = preorder[preorderIndex++];
         int inorderIndex = inorderIndexMap.get(num);
         int leftSize = inorderIndex - inorderStart;
 
         TreeNode left = build(
-            preorder, preorderStart + 1, preorderStart + leftSize,
+            preorder,
             inorderStart, inorderIndex-1
         );
         
         TreeNode right = build(
-            preorder, preorderStart + leftSize + 1, preorderEnd,
+            preorder,
             inorderIndex+1, inorderEnd
         );
 
